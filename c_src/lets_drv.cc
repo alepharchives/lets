@@ -591,8 +591,8 @@ lets_output_delete1(DrvData* d, char* buf, int len, int* index, int items)
     }
 
     // @TBD This is quite risky ... need to re-consider.
-    // delete d->impl.db;
-    // d->impl.db = NULL;
+    delete d->impl.db;
+    d->impl.db = NULL;
 
     driver_send_int(d, LETS_TRUE);
     return;

@@ -38,9 +38,9 @@
 %%% defines, types, records
 %%%----------------------------------------------------------------------
 
-%%-define(IMPL, qc_lets_raw).
+-define(IMPL, qc_lets_raw).
 %%-define(IMPL, qc_lets_proxy).
--define(IMPL, qc_lets_slave_proxy).
+%%-define(IMPL, qc_lets_slave_proxy).
 
 -define(TAB, ?MODULE).
 -define(INT_KEYS, lists:seq(0,10)).
@@ -82,6 +82,7 @@ serial_command_gen(_Mod,#state{tab=Tab, type=Type}=S) ->
     oneof([{call,?IMPL,insert,[Tab,oneof([gen_obj(S),gen_objs(S)])]}]
           ++ [{call,?IMPL,insert_new,[Tab,oneof([gen_obj(S),gen_objs(S)])]} || Type == ets]
           %% @TODO ++ [{call,?IMPL,delete,[Tab]}]
+          ++ [{call,?IMPL,delete,[Tab]}]
           ++ [{call,?IMPL,delete,[Tab,gen_key(S)]}]
           ++ [{call,?IMPL,delete_all_objs,[Tab]} || Type == ets]
           ++ [{call,?IMPL,lookup,[Tab,gen_key(S)]}]
@@ -324,7 +325,8 @@ gen_ets_type() ->
 gen_ets_impl() ->
     %% @NOTE Remove one or two of these to restrict to a particular
     %% implementation.
-    noshrink(oneof([drv,nif,ets])).
+    %% noshrink(oneof([drv,nif,ets])).
+    noshrink(oneof([nif])).
 
 gen_integer_key() ->
     oneof(?INT_KEYS).

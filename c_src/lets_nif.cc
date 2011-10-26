@@ -357,8 +357,8 @@ lets_nif_delete1(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
     }
 
     // @TBD This is quite risky ... need to re-consider.
-    // delete h->impl.db;
-    // h->impl.db = NULL;
+    delete h->impl.db;
+    h->impl.db = NULL;
 
     return lets_atom_true;
 }
